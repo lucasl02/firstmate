@@ -1,0 +1,21 @@
+Regression proof: BASHPID fallback on macOS Bash 3.2.57
+========================================================
+
+Environment: GNU bash, version 3.2.57(1)-release (arm64-apple-darwin25)
+
+1. BASHPID is absent on stock macOS Bash 3.2:
+   /bin/bash -c 'echo "BASHPID is: [${BASHPID:-UNSET}]"'
+   -> BASHPID is: [UNSET]
+
+2. Old code bug: bare $BASHPID is empty, so the owner check always skips:
+   owner=$$ -> remains $$, never reassigned to $PPID in subshell
+   This means fm_exec_timed could not detect it was running in a subshell,
+   breaking the owner-liveness detection on macOS.
+
+3. Fix: ${BASHPID:-$(exec /bin/sh -c 'printf "%s\n" "$PPID"')}
+   - At top level: resolves to $$ (correct)
+   - In subshell: resolves to the subshell PID (correct, different from $$)
+
+4. All 15 tests pass under /bin/bash (Bash 3.2.57):
+   - See bash32-test-output.txt for full output
+   - CI check: 15/15 "ok - " lines counted (matches expected count in ci.yml)
