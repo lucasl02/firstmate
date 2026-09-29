@@ -1,0 +1,153 @@
+===== unrecognized header shape
+--- input:
+session:
+  status: feedback
+prompts[2|]:
+  - uid: e1
+    prompt: typed words
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: unknown
+presented_items: 0
+malformed_items: 0
+complete: no
+UNRECOGNIZED CONTENT
+| prompts[2|]:
+END LAVISH RESULT (0 of unknown)
+===== list item mis-indented (broken)
+--- input:
+session:
+  status: feedback
+prompts[2]:
+  - uid: e1
+    prompt: kept
+    tag: p
+  - uid: e2
+   prompt: misindented
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: 2
+presented_items: 1
+malformed_items: 1
+complete: no
+| kept
+| kept
+END LAVISH RESULT (1 of 2)
+===== more list items than declared (overflow)
+--- input:
+session:
+  status: feedback
+prompts[1]:
+  - uid: e1
+    prompt: one
+    tag: p
+  - uid: e2
+    prompt: extra
+    tag: p
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: 1
+presented_items: 1
+malformed_items: 1
+complete: no
+| one
+| one
+END LAVISH RESULT (1 of 1)
+===== fewer list items than declared (truncated)
+--- input:
+session:
+  status: feedback
+prompts[3]:
+  - uid: e1
+    prompt: one
+    tag: p
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: 3
+presented_items: 1
+malformed_items: 0
+complete: no
+| one
+| one
+END LAVISH RESULT (1 of 3)
+===== duplicate key in one item
+--- input:
+session:
+  status: feedback
+prompts[1]:
+  - uid: e1
+    prompt: one
+    prompt: two
+    tag: p
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: 1
+presented_items: 0
+malformed_items: 1
+complete: no
+END LAVISH RESULT (0 of 1)
+===== primitive field given nested value
+--- input:
+session:
+  status: feedback
+prompts[1]:
+  - uid: e1
+    prompt:
+      x: y
+    tag: p
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: 1
+presented_items: 0
+malformed_items: 1
+complete: no
+END LAVISH RESULT (0 of 1)
+===== non-empty bracket form spoofing empty array
+--- input:
+session:
+  status: feedback
+prompts: [x]
+--- BASE:
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+END LAVISH RESULT (0 of 0)
+--- TARGET:
+declared_items: unknown
+presented_items: 0
+malformed_items: 0
+complete: no
+UNRECOGNIZED CONTENT
+| prompts: [x]
+END LAVISH RESULT (0 of unknown)

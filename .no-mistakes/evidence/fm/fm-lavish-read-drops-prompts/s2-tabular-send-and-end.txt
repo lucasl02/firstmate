@@ -1,0 +1,54 @@
+### Real lavish-axi 0.1.79 capture (Send & End, tabular form, two freeform messages):
+session:
+  file: /private/var/folders/vd/kcygs_6s2b10fz99mp8bzvjw0000gn/T/fm-lavish-lab.tptM8d/art/review.html
+  status: feedback
+  session_ended: true
+  ended_by: user
+prompts[2]{uid,prompt,selector,tag,text}:
+  "","overall looks good,\nship it","",message,""
+  "","second, with a comma","",message,""
+dom_snapshot: ""
+
+### BASE read:
+SESSION-ENDING MESSAGE
+SESSION-ENDING MESSAGE PART 1 of 2
+| overall looks good,
+| ship it
+SESSION-ENDING MESSAGE PART 2 of 2
+| second, with a comma
+END SESSION-ENDING MESSAGE
+
+declared_items: 2
+presented_items: 2
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: true
+annotation_count: 0
+session_ending_message_count: 2
+
+ANNOTATIONS: (none)
+END LAVISH RESULT (2 of 2)
+
+### TARGET read:
+SESSION-ENDING MESSAGE
+SESSION-ENDING MESSAGE PART 1 of 2
+| overall looks good,
+| ship it
+SESSION-ENDING MESSAGE PART 2 of 2
+| second, with a comma
+END SESSION-ENDING MESSAGE
+
+declared_items: 2
+presented_items: 2
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: true
+annotation_count: 0
+session_ending_message_count: 2
+
+ANNOTATIONS: (none)
+END LAVISH RESULT (2 of 2)
+### TARGET classify: feedback
+### TARGET silent exit: 1 (non-zero = announced)

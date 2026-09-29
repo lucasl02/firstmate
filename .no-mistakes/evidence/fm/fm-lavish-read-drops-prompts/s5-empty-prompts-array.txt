@@ -1,0 +1,40 @@
+### Real lavish-axi 0.1.79 capture (fatal artifact failure, empty prompts array):
+session:
+  file: /private/var/folders/vd/kcygs_6s2b10fz99mp8bzvjw0000gn/T/fm-lavish-lab.tptM8d/art/review2.html
+  status: feedback
+prompts: []
+artifact_failures[1]{kind,detail,severity}:
+  artifact-unavailable,Artifact failed to load,fatal
+dom_snapshot: ""
+
+### BASE read:
+SESSION-ENDING MESSAGE: (none)
+
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: (unset)
+annotation_count: 0
+session_ending_message_count: 0
+
+ANNOTATIONS: (none)
+END LAVISH RESULT (0 of 0)
+
+### TARGET read:
+SESSION-ENDING MESSAGE: (none)
+
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: (unset)
+annotation_count: 0
+session_ending_message_count: 0
+
+ANNOTATIONS: (none)
+END LAVISH RESULT (0 of 0)
+### TARGET classify: feedback
+### TARGET silent exit: 1 (non-zero = announced)

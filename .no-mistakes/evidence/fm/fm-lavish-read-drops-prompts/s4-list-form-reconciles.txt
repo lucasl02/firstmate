@@ -1,0 +1,27 @@
+### Real lavish-axi 0.1.79 capture (list form; reconcile choice + text-range annotation):
+session:
+  file: /private/var/folders/vd/kcygs_6s2b10fz99mp8bzvjw0000gn/T/fm-lavish-lab.tptM8d/art/review.html
+  status: feedback
+prompts[2]:
+  - uid: c2
+    prompt: "Reconcile\n\nContext data:\n{\n  \"schema\": \"fm-bearings-answer.v1\",\n  \"question\": \"stale-branch\",\n  \"selection\": \"reconcile\",\n  \"note\": \"rebase first\"\n}"
+    selector: form
+    tag: choice
+    text: Reconcile
+  - uid: e4
+    prompt: wrong word here
+    selector: p
+    tag: p
+    text: Intro copy
+    target:
+      type: text-range
+      text: copy
+dom_snapshot: ""
+
+### BASE reconciles:
+(exit 0)
+### TARGET reconciles:
+stale-branch	rebase first
+(exit 0)
+### TARGET answers (reconcile must not appear):
+(exit 0)

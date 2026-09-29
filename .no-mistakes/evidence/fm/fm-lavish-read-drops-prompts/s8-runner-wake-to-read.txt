@@ -1,0 +1,84 @@
+### Wake published by bin/fm-procevent.sh (lab FM_HOME) after the runner captured a real lavish-axi 0.1.79 round:
+1790714418	1	check	procevent:lavish-8358b36a30b06e7c:1	check: procevent lavish lavish-8358b36a30b06e7c 1
+
+### Durable capture (/var/folders/vd/kcygs_6s2b10fz99mp8bzvjw0000gn/T//fm-lab.VI9hQY/state/procevent-inbox/lavish-8358b36a30b06e7c.1.result):
+session:
+  file: /private/var/folders/vd/kcygs_6s2b10fz99mp8bzvjw0000gn/T/fm-lavish-lab.tptM8d/art/review3.html
+  status: feedback
+prompts[3]:
+  - uid: e1
+    prompt: "Fix this, please"
+    selector: main > h1
+    tag: h1
+    text: Title
+  - uid: e2
+    prompt: tighten this sentence
+    selector: section#intro > p
+    tag: p
+    text: "Intro copy, first draft"
+    target:
+      type: text-range
+      text: first draft
+      start: 12
+      end: 23
+  - uid: ""
+    prompt: "overall looks good,\nship it"
+    selector: ""
+    tag: message
+    text: ""
+dom_snapshot: ""
+
+### Handler follows the wake: bin/fm-procevent-lavish.sh read <capture> (TARGET 1b1e502b):
+CAPTAIN MESSAGE
+| overall looks good,
+| ship it
+END CAPTAIN MESSAGE
+
+declared_items: 3
+presented_items: 3
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: (unset)
+annotation_count: 2
+session_ending_message_count: 1
+
+ANNOTATIONS
+ANNOTATION 1 of 2
+element_uid: e1
+element_selector: main > h1
+tag: h1
+text:
+| Title
+prompt:
+| Fix this, please
+ANNOTATION 2 of 2
+element_uid: e2
+element_selector: section#intro > p
+tag: p
+text:
+| Intro copy, first draft
+prompt:
+| tighten this sentence
+extra_field: target
+| type: text-range
+| text: first draft
+| start: 12
+| end: 23
+END ANNOTATIONS
+END LAVISH RESULT (3 of 3)
+
+### Same capture through BASE 1f2c9548 read:
+SESSION-ENDING MESSAGE: (none)
+
+declared_items: 0
+presented_items: 0
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: (unset)
+annotation_count: 0
+session_ending_message_count: 0
+
+ANNOTATIONS: (none)
+END LAVISH RESULT (0 of 0)
