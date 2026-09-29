@@ -1,0 +1,125 @@
+===== t1
+$ bin/fm-procevent-lavish.sh arm review.html
+registered: lavish-e952c58122d00fe6 (lavish)
+armed: lavish-e952c58122d00fe6
+artifact: $LAB/board/review.html
+exit=0
+
+$ bin/fm-procevent.sh list
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       0
+===== t2
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file reply0.md   # no round captured yet
+error: cannot re-arm source lavish-e952c58122d00fe6 with a reply: no captured round is waiting to be acknowledged
+exit=1
+$ bin/fm-procevent.sh list
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       0
+===== t3
+$ cat state/.wake-queue
+1790716052	1	check	procevent:lavish-e952c58122d00fe6:1	check: procevent lavish lavish-e952c58122d00fe6 1
+
+$ bin/fm-procevent-lavish.sh read <round1.result>
+CAPTAIN MESSAGE
+| Please move Step A to Monday instead of Friday.
+END CAPTAIN MESSAGE
+
+declared_items: 1
+presented_items: 1
+malformed_items: 0
+complete: yes
+lifecycle: feedback
+session_ended: (unset)
+annotation_count: 0
+session_ending_message_count: 1
+
+ANNOTATIONS: (none)
+END LAVISH RESULT (1 of 1)
+$ bin/fm-procevent.sh reconcile
+reconciled: published=1 started=1 stopped=0 uncertain=0 failed=0
+exit=0
+$ bin/fm-procevent.sh list
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       1
+===== t4
+$ ls state/procevent-inbox   # pending rounds right before the reply re-arm
+lavish-e952c58122d00fe6.1.adapter
+lavish-e952c58122d00fe6.1.result
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file reply1.md
+registered: lavish-e952c58122d00fe6 (lavish, reply)
+acknowledged: lavish-e952c58122d00fe6 1
+armed: lavish-e952c58122d00fe6
+artifact: $LAB/board/review.html
+exit=0
+$ bin/fm-procevent.sh list
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       0
+$ test -f reply1.md && echo "caller reply file left in place"
+caller reply file left in place
+$ bin/fm-procevent.sh handled lavish-e952c58122d00fe6 1
+already-handled: lavish-e952c58122d00fe6 1
+===== t5
+$ bin/fm-procevent.sh list   # listener relaunched, two rounds pending
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       2
+$ bin/fm-procevent-lavish.sh read <round2.result> | head -3
+CAPTAIN MESSAGE
+| Round 2: rename Step B to 'Feature flag'.
+END CAPTAIN MESSAGE
+$ bin/fm-procevent-lavish.sh read <round3.result> | head -3
+CAPTAIN MESSAGE
+| Round 3: also default the flag to ON in staging.
+END CAPTAIN MESSAGE
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file reply2.md
+registered: lavish-e952c58122d00fe6 (lavish, reply)
+acknowledged: lavish-e952c58122d00fe6 2
+acknowledged: lavish-e952c58122d00fe6 3
+armed: lavish-e952c58122d00fe6
+artifact: $LAB/board/review.html
+exit=0
+$ bin/fm-procevent.sh handled lavish-e952c58122d00fe6 3   # later wake for covered round
+already-handled: lavish-e952c58122d00fe6 3
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file reply2.md   # nothing left to answer
+error: cannot re-arm source lavish-e952c58122d00fe6 with a reply: no captured round is waiting to be acknowledged
+exit=1
+$ bin/fm-procevent.sh list
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       0
+===== t6
+$ bin/fm-procevent.sh list
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       1
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file does-not-exist.md
+error: agent reply file does not exist: $LAB/does-not-exist.md
+exit=1
+$ bin/fm-procevent.sh list   # round 4 still pending, listener still live
+SOURCE                       ADAPTER      OWNER      PENDING
+lavish-e952c58122d00fe6      lavish       live       1
+listener pid before=59568 after=59568
+===== t7
+$ bin/fm-procevent.sh list
+no sources registered
+$ bin/fm-procevent-lavish.sh classify <round5.result>
+feedback
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file reply5.md   # terminal round waiting
+error: cannot reply to terminal Lavish result $LAB/state/procevent-inbox/lavish-e952c58122d00fe6.5.result; the review has ended, so acknowledge it with bin/fm-procevent.sh handled
+exit=1
+$ bin/fm-procevent.sh list   # not registered again
+no sources registered
+$ bin/fm-procevent.sh handled lavish-e952c58122d00fe6 5
+handled: lavish-e952c58122d00fe6 5
+$ bin/fm-procevent-lavish.sh arm review.html --agent-reply-file reply5.md   # ended board, nothing waiting
+error: cannot re-arm source lavish-e952c58122d00fe6 with a reply: no captured round is waiting to be acknowledged
+exit=1
+$ bin/fm-procevent.sh list
+no sources registered
+===== t8
+$ lavish-axi fresh.html   # opened, never armed
+$ bin/fm-procevent-lavish.sh arm fresh.html --agent-reply-file reply5.md
+error: cannot re-arm source lavish-baf3d71b3fc333c1 with a reply: no captured round is waiting to be acknowledged
+exit=1
+$ bin/fm-procevent.sh list
+no sources registered
+===== final Lavish session chat (isolated LAVISH_AXI_STATE_DIR state.json)
+review.html chat: [('user', 'Please move Step A to Monday instead of '), ('agent', 'Done - Step A now lands **Monday** inste'), ('user', "Round 2: rename Step B to 'Feature flag'"), ('user', 'Round 3: also default the flag to ON in '), ('agent', 'Applied rounds 2 and 3:  - Step B rename'), ('user', 'Round 4: add a rollback note.'), ('agent', 'Added a rollback note under Step B.'), ('user', 'Looks good, ship it. Final: thanks!')]
+fresh.html chat: []
